@@ -1,0 +1,11 @@
+LineLength:
+  Max: 160
+
+Documentation:
+  Enabled: false
+
+DefEndAlignment:
+  AutoCorrect: true
+
+EndAlignment:
+  AutoCorrect: true
