@@ -8,16 +8,13 @@ class LangSvr
 
   private
 
-  def init(request)
+  def init(_request)
     return default if initialized?
-    
-   end
+  end
 
   def receive; end
 
-  def respond(data)
-    
-   end
+  def respond(data); end
 
   def resolve(request)
     return respond default unless initialized? || request[:method] == :initialize

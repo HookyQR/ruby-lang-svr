@@ -1,3 +1,7 @@
+AllCops:
+  Exclude:
+    - bin/rspec
+
 LineLength:
   Max: 160
 
@@ -9,3 +13,4 @@ DefEndAlignment:
 
 EndAlignment:
   AutoCorrect: true
+

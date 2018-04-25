@@ -3,7 +3,7 @@
 module Protocol
   module ErrorCodes
     def self.valid_codes
-      @codes ||= constants(false).map { |c| const_get(c) }
+      @valid_codes ||= constants(false).map { |c| const_get(c) }
     end
 
     PARSE_ERROR = -32_700

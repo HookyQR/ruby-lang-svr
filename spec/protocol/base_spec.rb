@@ -4,12 +4,14 @@ require 'protocol/base'
 
 RSpec.describe Protocol::Base do
   after do
-    class Protocol::Base
-      instance_variable_get(:@lsp_attrs).each do |name, _|
-        remove_method(name) if method_defined? name
-        remove_method("#{name}=") if method_defined? "#{name}="
+    module Protocol
+      class Base
+        instance_variable_get(:@lsp_attrs).each do |name, _|
+          remove_method(name) if method_defined? name
+          remove_method("#{name}=") if method_defined? "#{name}="
+        end
+        @lsp_attrs = {}
       end
-      @lsp_attrs = {}
     end
   end
   subject(:base_class) { Protocol::Base }
