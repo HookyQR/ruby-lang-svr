@@ -1,0 +1,7 @@
+language: ruby
+rvm:
+  - 2.3
+
+bundler_args: --binstubs --without production
+
+script: bin/rspec
