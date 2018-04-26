@@ -23,6 +23,6 @@ RSpec.describe Protocol::Location do
       )
     end
 
-    it { is_expected.to match(/uri:"document",range:\{.*\}/) }
+    it { is_expected.to match(/"uri":"document","range":\{.*\}/) }
   end
 end

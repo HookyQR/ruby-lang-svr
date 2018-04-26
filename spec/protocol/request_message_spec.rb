@@ -20,12 +20,12 @@ RSpec.describe Protocol::RequestMessage do
       request_message.method = 'test'
     end
 
-    it { is_expected.to include('jsonrpc:"2.0"', 'method:"test"', 'id:1') }
+    it { is_expected.to include('"jsonrpc":"2.0"', '"method":"test"', '"id":1') }
     it { is_expected.not_to include('params') }
 
     context 'params set' do
       before { request_message.params = 'paramTest' }
-      it { is_expected.to include('jsonrpc:"2.0"', 'method:"test"', 'id:1', 'params:"paramTest"') }
+      it { is_expected.to include('"jsonrpc":"2.0"', '"method":"test"', '"id":1', '"params":"paramTest"') }
     end
   end
 end

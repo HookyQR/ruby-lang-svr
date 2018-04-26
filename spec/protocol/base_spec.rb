@@ -123,12 +123,12 @@ RSpec.describe Protocol::Base do
     describe '.to_s' do
       subject(:string) { base.to_s }
 
-      it { is_expected.to eq '{key1:"test",key2:3,key3:null}' }
+      it { is_expected.to eq '{"key1":"test","key2":3,"key3":null}' }
 
       context 'with an empty optional' do
         before { base.key1 = nil }
 
-        it { is_expected.to eq '{key2:3,key3:null}' }
+        it { is_expected.to eq '{"key2":3,"key3":null}' }
       end
     end
   end

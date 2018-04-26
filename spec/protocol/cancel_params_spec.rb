@@ -17,6 +17,6 @@ RSpec.describe Protocol::CancelParams do
     subject(:string) { cancel_params.to_s }
     before { cancel_params.id = 'test' }
 
-    it { is_expected.to include('id:"test"') }
+    it { is_expected.to include('"id":"test"') }
   end
 end

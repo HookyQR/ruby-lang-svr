@@ -91,7 +91,7 @@ module Protocol
     def lsp_kv_strings
       self.class.lsp_attrs.map do |key, _opts|
         val = send(key)
-        "#{key}:#{output_for(val)}" unless val.nil?
+        "\"#{key}\":#{output_for(val)}" unless val.nil?
       end
     end
 

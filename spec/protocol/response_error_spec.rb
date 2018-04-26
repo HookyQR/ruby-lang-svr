@@ -21,7 +21,7 @@ RSpec.describe Protocol::ResponseError do
       response_error.message = 'test'
     end
 
-    it { is_expected.to include('message:"test"', 'code:-32001') }
-    it { is_expected.not_to include('data:') }
+    it { is_expected.to include('"message":"test"', '"code":-32001') }
+    it { is_expected.not_to include('"data":') }
   end
 end

@@ -19,12 +19,12 @@ RSpec.describe Protocol::NotificationMessage do
       notification_message.method = 'test'
     end
 
-    it { is_expected.to include('jsonrpc:"2.0"', 'method:"test"') }
+    it { is_expected.to include('"jsonrpc":"2.0"', '"method":"test"') }
     it { is_expected.not_to include('params') }
 
     context 'params set' do
       before { notification_message.params = 'paramTest' }
-      it { is_expected.to include('jsonrpc:"2.0"', 'method:"test"', 'params:"paramTest"') }
+      it { is_expected.to include('"jsonrpc":"2.0"', '"method":"test"', '"params":"paramTest"') }
     end
   end
 end

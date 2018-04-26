@@ -21,13 +21,13 @@ RSpec.describe Protocol::ResponseMessage do
       response_message.result = 'test'
     end
 
-    it { is_expected.to include('jsonrpc:"2.0"', 'result:"test"', 'id:1') }
-    it { is_expected.not_to include('error') }
+    it { is_expected.to include('"jsonrpc":"2.0"', '"result":"test"', '"id":1') }
+    it { is_expected.not_to include('"error":') }
 
     context 'error set' do
       before { response_message.error = Protocol::ResponseError.new(code: Protocol::ErrorCodes::UNKNOWN_ERROR_CODE, message: '') }
 
-      it { is_expected.to match(/,error:\{.*\}/) }
+      it { is_expected.to match(/"error":\{.*\}/) }
     end
   end
 end

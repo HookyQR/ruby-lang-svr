@@ -20,6 +20,6 @@ RSpec.describe Protocol::Range do
       range.end = Protocol::Position.new(line: 1, character: 2)
     end
 
-    it { is_expected.to match(/start:\{.*\},end:\{.*\}/) }
+    it { is_expected.to match(/"start":\{.*\},"end":\{.*\}/) }
   end
 end

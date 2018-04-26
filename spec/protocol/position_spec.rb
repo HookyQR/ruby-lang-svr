@@ -20,6 +20,6 @@ RSpec.describe Protocol::Position do
       position.character = 2
     end
 
-    it { is_expected.to include('line:1', 'character:2') }
+    it { is_expected.to include('"line":1', '"character":2') }
   end
 end
