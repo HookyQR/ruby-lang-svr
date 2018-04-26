@@ -1,6 +1,8 @@
 language: ruby
 rvm:
   - 2.3
+  - 2.4
+  # - 2.5 # bundler/dep_proxy can't load for some reason on travis.
 
 bundler_args: --binstubs --without production
 
