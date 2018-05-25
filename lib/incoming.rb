@@ -5,6 +5,9 @@ Dir[File.join('process', 'messages', '*.rb')].each { |file| require file }
 module LangSvr
   CRLF = "\r\n"
 
+  class UnprocessableData < StandardError; end
+  class UnknownMessage < StandardError; end
+
   class Incoming
     def initialize(in_stream)
       @in_stream = in_stream
@@ -20,8 +23,12 @@ module LangSvr
         response = cls.from_hash(request) if cls::METHOD == request[:method]
       end
 
-      response
+      response || (raise UnknownMessage, request)
+    rescue KeyError
+      raise UnknownMessage, request
     end
+
+    private
 
     def receive
       return unless (length = read_length)
@@ -31,6 +38,8 @@ module LangSvr
       return unless content
 
       symbolize_keys(JSON.parse(content))
+    rescue JSON::ParserError
+      raise UnprocessableData, content
     end
 
     def read_length
@@ -47,8 +56,6 @@ module LangSvr
     def content_length(header_line)
       header_line.match(/\d+/)&.to_a&.first&.to_i if header_line&.downcase&.start_with?('content-length:')
     end
-
-    private
 
     def symbolize_keys(hash)
       hash.map do |key, value|

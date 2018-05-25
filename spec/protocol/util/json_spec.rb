@@ -36,7 +36,7 @@ RSpec.describe Protocol::Util::JSON do
 
       context 'nested' do
         let(:object) { { a: nested_object, b: nested_array } }
-        let(:nested_object) { {a:2} }
+        let(:nested_object) { { a: 2 } }
         let(:nested_array) { [:b, 3] }
         before do
           expect(nested_object).to receive(:map).and_call_original
