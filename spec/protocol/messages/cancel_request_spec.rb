@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'protocol/message/cancel_request'
+require 'protocol/messages/cancel_request'
 
 RSpec.describe Protocol::Messages::CancelRequest do
   subject(:cancel_request) { described_class.new(id: 5) }

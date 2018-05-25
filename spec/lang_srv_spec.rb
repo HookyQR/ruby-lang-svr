@@ -2,10 +2,12 @@
 
 require 'lang_svr'
 
-RSpec.describe LangSvr do
+require 'protocol/messages/initialize_request'
+
+RSpec.describe LangSvr::LangSvr do
   subject(:lang_svr) { described_class.new(in_stream, out_stream) }
 
-  let(:in_stream) { StringIO.new("") }
+  let(:in_stream) { StringIO.new('') }
   let(:out_stream) { StringIO.new }
 
   describe '.initialized?' do
@@ -16,12 +18,11 @@ RSpec.describe LangSvr do
     end
 
     context 'after init' do
+      let(:init_request) { Protocol::Messages::InitializeRequest.new(id: 1, params: init_params).to_s }
+      let(:init_params) { Protocol::InitializeParams.new(processId: 1, rootUri: nil, capabilities: client_caps) }
+      let(:client_caps) { Protocol::ClientCapabilities.new }
       let(:in_stream) do
-        StringIO.new <<~INIT.gsub(/\r\n|\n/, "\r\n").strip
-Content-Length: 112
-
-{"jsonrpc":"2.0","method":"initialize","params":{"processId":1,"rootUri":"file:///root/path","capabilities":{}}}
-INIT
+        StringIO.new "Content-Length: #{init_request.length}\r\n\r\n#{init_request}"
       end
 
       before { lang_svr.run }
@@ -31,5 +32,6 @@ INIT
   end
 
   describe '.run' do
+    
   end
 end

@@ -1,5 +1,7 @@
 # frozen-string-literal: true
 
+require_relative 'util'
+
 module Protocol
   class NULL
     def to_s
@@ -11,7 +13,7 @@ module Protocol
     def initialize(**args)
       args.each do |key, val|
         setter = "#{key}="
-        send(setter, val) if respond_to?("#{key}=")
+        send(setter, val) if respond_to?(setter)
       end
     end
 
@@ -28,82 +30,86 @@ module Protocol
       lsp_attribute_getter(key)
     end
 
-    def self.lsp_attrs
-      parent = ancestors[1]
-      {}.merge(parent.respond_to?(:lsp_attrs) ? parent.lsp_attrs : {})
-        .merge(@lsp_attrs || {})
-    end
-
     def to_s
-      "{#{lsp_kv_strings.compact.join(',')}}"
-    end
-
-    def self.rectify(key, value)
-      value.nil? ? nulify(key) : validate(key, value)
+      Util::JSON.new(self.class.lsp_attrs.map { |key, _opts| [key, send(key)] }.to_h).call
     end
 
     private
-
-    private_class_method def self.lsp_const(key, value)
-      define_method("#{key}=") { value } if methods.include?("#{key}=")
-
-      if value.nil?
-        v = NULL.new
-        define_method(key) { v }
-      else
-        define_method(key) { value }
-      end
-    end
-
-    private_class_method def self.lsp_attribute_type_setter(key, types)
-      raise StandardError, 'attribute types must have at least one value' if types.empty?
-      raise StandardError, 'attribute types array must all be classes' unless types.all? { |t| t.is_a? Class }
-
-      @lsp_attrs[key][:types] = types
-      define_method("#{key}=") { |value| store(key, self.class.rectify(key, value)) }
-    end
-
-    private_class_method def self.lsp_attribute_getter(key)
-      own_attrs = @lsp_attrs[key]
-      define_method(key) do
-        return instance_variable_get("@#{key}") if instance_variable_defined? "@#{key}"
-        raise StandardError, "Non-optional attribute #{key} is not set" unless own_attrs[:optional]
-      end
-    end
-
-    private_class_method def self.nulify(key)
-      return NULL.new if @lsp_attrs[key][:types].include?(NilClass) || @lsp_attrs[key][:in]&.include?(nil)
-      return nil if @lsp_attrs[key][:optional]
-      raise StandardError, "#{key} not optional, and can not be nil"
-    end
-
-    private_class_method def self.validate(key, value)
-      own_attrs = @lsp_attrs[key]
-      raise StandardError, "#{value} is not a #{string_list(own_attrs[:types])}" unless own_attrs[:types].any? { |t| value.is_a? t }
-      raise StandardError, "#{key} must be one of [#{own_attrs[:in]}]" if own_attrs[:in] && !own_attrs[:in].include?(value)
-      value
-    end
 
     def store(key, value)
       value.nil? ? remove_instance_variable("@#{key}") : instance_variable_set("@#{key}", value)
     end
 
-    def lsp_kv_strings
-      self.class.lsp_attrs.map do |key, _opts|
-        val = send(key)
-        "\"#{key}\":#{output_for(val)}" unless val.nil?
+    class << self
+      def lsp_attrs
+        parent = ancestors[1]
+        {}.merge(parent.respond_to?(:lsp_attrs) ? parent.lsp_attrs : {})
+          .merge(@lsp_attrs || {})
       end
-    end
 
-    def output_for(val)
-      val.is_a?(String) ? "\"#{val}\"" : val.to_s
-    end
+      def rectify(key, value)
+        value.nil? ? nulify(key) : validate(key, value)
+      end
 
-    private_class_method def self.string_list(values)
-      case values.length
-      when 0 then ''
-      when 1 then values[0].to_s
-      else        [values[0...-1].join(', '), values[-1]].join(' or ')
+      def from_hash(hash)
+        Util::FromHash.new(hash, self).call
+      end
+
+      private
+
+      def lsp_const(key, value)
+        define_method("#{key}=") { value } if methods.include?("#{key}=")
+
+        v = value.nil? ? NULL.new : value
+        define_method(key) { v }
+        const_set(key.to_s.gsub(/[A-Z]/) { |u| "_#{u}" }.upcase, v)
+      end
+
+      def lsp_attribute_type_setter(key, types)
+        raise StandardError, 'attribute types must have at least one value' if types.empty?
+        raise StandardError, 'attribute types array must all be classes' unless types.all? { |t| t.is_a? Class }
+
+        @lsp_attrs[key][:types] = types
+        define_method("#{key}=") { |value| store(key, self.class.rectify(key, value)) }
+      end
+
+      def lsp_attribute_getter(key)
+        own_attrs = lsp_attrs[key]
+        define_method(key) do
+          return instance_variable_get("@#{key}") if instance_variable_defined? "@#{key}"
+          raise StandardError, "Non-optional attribute #{key} is not set in #{self.class}" unless own_attrs[:optional]
+        end
+      end
+
+      def nulify(key)
+        return NULL.new if lsp_attrs[key][:types].include?(NilClass) || lsp_attrs[key][:in]&.include?(nil)
+        return nil if lsp_attrs[key][:optional]
+        raise StandardError, "#{key} not optional, and can not be nil"
+      end
+
+      def try_protocol_item(attrs, value)
+        return value unless value.is_a? Hash
+
+        attrs.detect do |t|
+          if t.respond_to?(:from_hash) && (result = t.from_hash(value))
+            return result
+          end
+        end
+
+        value
+      end
+
+      def validate(key, value)
+        own_attrs = lsp_attrs[key]
+        own_types = lsp_attrs[key][:types]
+        local_value = try_protocol_item(own_types, value)
+        raise StandardError, "#{local_value} is not a #{Util::StringList.new(own_types).call}" unless Util::IsOneOf.new(local_value, own_types).call
+        raise StandardError, "#{key} must be one of #{own_attrs[:in]}" unless match_enum(local_value, own_attrs)
+        local_value
+      end
+
+      def match_enum(value, attrs)
+        attrs[:in].nil? || attrs[:in].include?(value)
       end
     end
   end

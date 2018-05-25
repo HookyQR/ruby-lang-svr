@@ -22,6 +22,7 @@ RSpec.describe Protocol::Base do
 
   describe '#lsp_attribute' do
     subject(:lsp_attribute) { base_class.lsp_attribute(key, types, opts) }
+
     context 'happy case' do
       it { expect { lsp_attribute }.not_to raise_error }
 
@@ -42,6 +43,8 @@ RSpec.describe Protocol::Base do
     end
 
     context 'a value instead of a type (const set)' do
+      after { base_class.send(:remove_const, :KEY) }
+
       let(:types) { 1 }
       it { expect { lsp_attribute }.not_to raise_error }
 
@@ -68,6 +71,7 @@ RSpec.describe Protocol::Base do
       end
 
       subject(:lsp_attrs) { T.lsp_attrs }
+
       it { is_expected.to include(key => a_hash_including(opts)) }
       it { is_expected.to include(:key2) }
 
