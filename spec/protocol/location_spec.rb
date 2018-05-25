@@ -9,6 +9,7 @@ RSpec.describe Protocol::Location do
 
   describe 'interface' do
     subject(:methods) { location.methods }
+
     it { is_expected.to include(:uri, :range) }
     it { is_expected.to include(:uri=, :range=) }
   end

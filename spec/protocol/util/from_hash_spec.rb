@@ -31,6 +31,7 @@ RSpec.describe Protocol::Util::FromHash do
 
       it { is_expected.to be_nil }
     end
+
     context 'when value key not in class' do
       let(:hash) { { constVal: 'first', no_val: 'third' } }
 

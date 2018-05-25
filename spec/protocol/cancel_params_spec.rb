@@ -9,6 +9,7 @@ RSpec.describe Protocol::CancelParams do
 
   describe 'interface' do
     subject(:methods) { cancel_params.methods }
+
     it { is_expected.to include(:id) }
     it { is_expected.to include(:id=) }
   end

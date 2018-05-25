@@ -16,6 +16,7 @@ RSpec.describe Protocol::Message do
 
   describe '#to_s' do
     subject(:string) { message.to_s }
+
     it { is_expected.to eq '{"jsonrpc":"2.0"}' }
   end
 end

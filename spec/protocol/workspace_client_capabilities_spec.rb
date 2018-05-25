@@ -9,6 +9,7 @@ RSpec.describe Protocol::WorkspaceClientCapabilities do
 
   describe 'interface' do
     subject(:methods) { ws_client_capabilities.methods }
+
     it { is_expected.to include(:applyEdit, :workspaceEdit, :didChangeConfiguration, :symbol, :executeCommand, :workspaceFolders, :configuration) }
     it { is_expected.to include(:applyEdit=, :workspaceEdit=, :didChangeConfiguration=, :symbol=, :executeCommand=, :workspaceFolders=, :configuration=) }
   end

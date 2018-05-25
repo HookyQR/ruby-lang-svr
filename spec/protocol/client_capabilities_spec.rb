@@ -9,6 +9,7 @@ RSpec.describe Protocol::ClientCapabilities do
 
   describe 'interface' do
     subject(:methods) { client_capabilities.methods }
+
     it { is_expected.to include(:workspace, :textDocument, :experimental) }
     it { is_expected.to include(:workspace=, :textDocument=, :experimental=) }
   end

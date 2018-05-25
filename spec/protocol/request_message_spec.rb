@@ -9,6 +9,7 @@ RSpec.describe Protocol::RequestMessage do
 
   describe 'interface' do
     subject(:methods) { request_message.methods }
+
     it { is_expected.to include(:id, :method, :params) }
     it { is_expected.to include(:id=, :method=, :params=) }
   end
@@ -25,6 +26,7 @@ RSpec.describe Protocol::RequestMessage do
 
     context 'params set' do
       before { request_message.params = 'paramTest' }
+
       it { is_expected.to include('"jsonrpc":"2.0"', '"method":"test"', '"id":1', '"params":"paramTest"') }
     end
   end

@@ -10,10 +10,12 @@ RSpec.describe Protocol::Base do
           remove_method(name) if method_defined? name
           remove_method("#{name}=") if method_defined? "#{name}="
         end
+
         @lsp_attrs = {}
       end
     end
   end
+
   subject(:base_class) { Protocol::Base }
 
   let(:key) { :key }

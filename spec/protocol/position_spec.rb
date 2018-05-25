@@ -9,6 +9,7 @@ RSpec.describe Protocol::Position do
 
   describe 'interface' do
     subject(:methods) { position.methods }
+
     it { is_expected.to include(:line, :character) }
     it { is_expected.to include(:line=, :character=) }
   end

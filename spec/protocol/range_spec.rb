@@ -9,6 +9,7 @@ RSpec.describe Protocol::Range do
 
   describe 'interface' do
     subject(:methods) { range.methods }
+
     it { is_expected.to include(:start, :end) }
     it { is_expected.to include(:start=, :end=) }
   end

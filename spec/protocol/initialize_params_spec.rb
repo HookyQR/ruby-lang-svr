@@ -9,6 +9,7 @@ RSpec.describe Protocol::InitializeParams do
 
   describe 'interface' do
     subject(:methods) { interface.methods }
+
     it { is_expected.to include(:processId, :rootPath, :rootUri, :initializationOptions, :capabilities, :trace, :workspaceFolders) }
     it { is_expected.to include(:processId=, :rootPath=, :rootUri=, :initializationOptions=, :capabilities=, :trace=, :workspaceFolders=) }
   end
