@@ -14,3 +14,5 @@ DefEndAlignment:
 EndAlignment:
   AutoCorrect: true
 
+IndentHeredoc:
+  Enabled: false
