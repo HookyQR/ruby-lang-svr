@@ -9,8 +9,9 @@ module LangSvr
   class UnknownMessage < StandardError; end
 
   class Incoming
-    def initialize(in_stream)
+    def initialize(in_stream, debug = false)
       @in_stream = in_stream
+      @debug = debug
     end
 
     def message
@@ -37,6 +38,7 @@ module LangSvr
       content = @in_stream.read(length)
       return unless content
 
+      STDERR.puts "RX: #{content}" if @debug
       symbolize_keys(JSON.parse(content))
     rescue JSON::ParserError
       raise UnprocessableData, content

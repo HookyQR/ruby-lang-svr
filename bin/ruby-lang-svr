@@ -3,6 +3,6 @@
 
 require_relative '../lib/lang_svr'
 
-svr = LangSvr::LangSvr.new(STDIN, STDOUT)
+svr = LangSvr::LangSvr.new(STDIN, STDOUT, ARGV.include?('--debug'))
 
 svr.run

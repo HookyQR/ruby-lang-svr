@@ -13,9 +13,10 @@ module LangSvr
       @initialized
     end
 
-    def initialize(in_stream = STDIN, out_stream = STDOUT)
-      @incoming = Incoming.new(in_stream)
+    def initialize(in_stream = STDIN, out_stream = STDOUT, debug = false)
+      @incoming = Incoming.new(in_stream, debug)
 
+      @debug = debug
       @out_stream = out_stream
     end
 
@@ -54,6 +55,7 @@ module LangSvr
     def respond(data)
       data = data.to_s
 
+      STDERR.puts "TX: #{data}" if @debug
       out_stream.write "Content-Length:#{data.bytesize}\r\n"
       out_stream.write "\r\n"
       out_stream.write data
