@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Dir[File.join('process', 'messages', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, 'protocol', 'messages', '*.rb')].each { |file| require_relative file }
 
 module LangSvr
   CRLF = "\r\n"

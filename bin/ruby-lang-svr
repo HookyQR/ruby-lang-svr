@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 # frozen-string-literal: true
 
-require_relative '../lib/lang-svr'
+require_relative '../lib/lang_svr'
 
-svr = LangSvr.new ARGF.argv[0]
+svr = LangSvr::LangSvr.new(STDIN, STDOUT)
 
 svr.run

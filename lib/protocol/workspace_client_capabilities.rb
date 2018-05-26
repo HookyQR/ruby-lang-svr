@@ -4,12 +4,13 @@ require_relative 'base'
 
 module Protocol
   class WorkspaceClientCapabilities < Base
-    lsp_attribute :applyEdit, Object, optional: true, in: [true, false]
+    lsp_attribute :applyEdit, [TrueClass, FalseClass], optional: true, in: [true, false]
     lsp_attribute :workspaceEdit, Hash, optional: true
     lsp_attribute :didChangeConfiguration, Hash, optional: true
+    lsp_attribute :didChangeWatchedFiles, Hash, optional: true
     lsp_attribute :symbol, Hash, optional: true
     lsp_attribute :executeCommand, Hash, optional: true
-    lsp_attribute :workspaceFolders, Object, optional: true, in: [true, false]
-    lsp_attribute :configuration, Object, optional: true, in: [true, false]
+    lsp_attribute :workspaceFolders, [TrueClass, FalseClass], optional: true, in: [true, false]
+    lsp_attribute :configuration, [TrueClass, FalseClass], optional: true, in: [true, false]
   end
 end
