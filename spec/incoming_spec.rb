@@ -57,5 +57,15 @@ RSpec.describe LangSvr::Incoming do
         expect { message }.to raise_exception(LangSvr::UnprocessableData)
       end
     end
+
+    context 'multiple messages' do
+      let(:example_string) { "Content-Length: #{length}\r\n\r\n#{data}" * 2 }
+
+      it 'can respond twice, not thrice' do
+        expect(incoming.message).not_to be_nil
+        expect(incoming.message).not_to be_nil
+        expect(incoming.message).to be_nil
+      end
+    end
   end
 end
