@@ -8,10 +8,6 @@ module Protocol
     class CancelRequest < NotificationMessage
       lsp_const :method, '$/cancelRequest'
       lsp_attribute :params, CancelParams
-
-      def initialize(id:)
-        super(params: CancelParams.new(id: id))
-      end
     end
   end
 end

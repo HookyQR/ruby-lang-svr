@@ -3,19 +3,8 @@
 require 'protocol/messages/initialized_notification'
 
 RSpec.describe Protocol::Messages::InitializedNotification do
-  subject(:interface) { described_class.new }
+  let(:readable) { %i[method] }
+  let(:writeable) { %i[params] }
 
-  it { is_expected.to be_a Protocol::Base }
-
-  describe 'interface' do
-    subject(:methods) { interface.methods }
-
-    it { is_expected.to include(:method) }
-  end
-
-  describe '#to_s' do
-    subject(:string) { interface.to_s }
-
-    it { is_expected.to include('"method":"initialized"') }
-  end
+  include_examples 'protocol component', Protocol::NotificationMessage
 end
