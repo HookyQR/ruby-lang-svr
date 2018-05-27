@@ -59,10 +59,12 @@ module LangSvr
       header_line.match(/\d+/)&.to_a&.first&.to_i if header_line&.downcase&.start_with?('content-length:')
     end
 
-    def symbolize_keys(hash)
-      hash.map do |key, value|
-        [key.to_sym, value.is_a?(Hash) ? symbolize_keys(value) : value]
-      end.to_h
+    def symbolize_keys(input)
+      case input
+      when ::Hash then input.map { |key, value| [key.to_sym, symbolize_keys(value)] }.to_h
+      when ::Array then input.map { |value| symbolize_keys(value) }
+      else input
+      end
     end
   end
 end

@@ -9,9 +9,9 @@ module Protocol
 
       def call
         case @object
-        when String, Symbol then %("#{@object}")
-        when Hash   then "{#{@object.map { |key, sub_val| kv_output(key, sub_val) }.compact.join(',')}}"
-        when Array  then "[#{@object.map { |sub_val| Util::JSON.new(sub_val).call }.compact.join(',')}]"
+        when ::String, Symbol then %("#{@object}")
+        when ::Hash   then "{#{@object.map { |key, sub_val| kv_output(key, sub_val) }.compact.join(',')}}"
+        when ::Array  then "[#{@object.map { |sub_val| Util::JSON.new(sub_val).call }.compact.join(',')}]"
         else @object.to_s
         end
       end

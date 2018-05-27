@@ -21,15 +21,17 @@ module LangSvr
     end
 
     def run
+      threads = []
       loop do
         request = @incoming.message
         break unless request
         if initialized?
-          Thread.new { resolve request }
+          threads << Thread.new { resolve request }
         else
           resolve request
         end
       end
+      threads.each(&:join)
     end
 
     private
@@ -53,6 +55,7 @@ module LangSvr
     end
 
     def respond(data)
+      return unless data
       data = data.to_s
 
       STDERR.puts "TX: #{data}" if @debug
@@ -70,26 +73,32 @@ module LangSvr
     end
 
     def process(request)
-      case request
-      when Protocol::Messages::InitializeRequest then init request
-      else default(request.respond_to?(:id ? reques.id : nil))
+      if request.is_a? Protocol::Messages::InitializeRequest
+        init request
+      elsif request.respond_to? :process_message
+        request.process_message
+      else
+        default(request.respond_to?(:id) ? request.id : nil)
       end
+    rescue NotImplementedError
+      default(request.id, 'handling not yet implemented') if request.respond_to? :id
     end
 
     def uninitialized
       Protocol::ResponseMessage.new(
         id: nil,
-        error: Protocol::ResponseError(
+        error: Protocol::ResponseError.new(
           code: Protocol::ErrorCodes::SERVER_NOT_INITIALIZED
         )
       )
     end
 
-    def default(id)
+    def default(id, message = 'unknown error occured')
       Protocol::ResponseMessage.new(
         id: id,
-        error: Protocol::ResponseError(
-          code: Protocol::ErrorCodes::METHOD_NOT_FOUND
+        error: Protocol::ResponseError.new(
+          code: Protocol::ErrorCodes::UNKNOWN_ERROR_CODE,
+          message: message
         )
       )
     end

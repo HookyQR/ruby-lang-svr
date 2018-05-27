@@ -7,6 +7,10 @@ module Protocol
     class DidChangeConfiguration < NotificationMessage
       lsp_const :method, 'workspace/didChangeConfiguration'
       lsp_attribute :params, DidChangeConfigurationParams
+
+      def process_message
+        raise NotImplementedError
+      end
     end
   end
 end

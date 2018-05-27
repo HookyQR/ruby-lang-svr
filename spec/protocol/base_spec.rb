@@ -32,6 +32,12 @@ RSpec.describe Protocol::Base do
         let(:types) { [String, Integer] }
         it { expect { lsp_attribute }.not_to raise_error }
       end
+
+      context 'with array types' do
+        let(:opts) { { array: true } }
+
+        it { expect { lsp_attribute }.not_to raise_error }
+      end
     end
 
     context 'no types set' do
@@ -88,18 +94,26 @@ RSpec.describe Protocol::Base do
       base_class.lsp_attribute(:key1, String, optional: true)
       base_class.lsp_attribute(:key2, Integer, in: [1, 2, 3])
       base_class.lsp_attribute(:key3, [Integer, NilClass])
+      base_class.lsp_attribute(:key4, [Integer, NilClass], array: true)
     end
 
-    subject(:base) { base_class.new(key1: 'test', key2: 3, key3: nil) }
+    subject(:base) { base_class.new(key1: 'test', key2: 3, key3: nil, key4: [1, 2, 3]) }
 
     describe 'setting' do
       it "can set to it's type" do
         expect(base.key1 = 'new value').to eq 'new value'
         expect(base.key1).to eq 'new value'
+        expect(base.key4 = [5, 6]).to eq [5, 6]
+        expect(base.key4).to eq [5, 6]
       end
 
       it "won't set to something else" do
-        expect { base.key1 = 5 }.to raise_error(StandardError, /5 is not a String/)
+        expect { base.key1 = 5 }.to raise_error(StandardError, /'5' is not a String/)
+        expect { base.key4 = 5 }.to raise_error(StandardError, /'5' is not an Array/)
+      end
+
+      context 'array internal setting' do
+        it { expect { base.key4 = ['no'] }.to raise_error(StandardError, /'no' is not a/) }
       end
 
       it "won't set to something outside of it's `:in` setting" do
@@ -129,12 +143,12 @@ RSpec.describe Protocol::Base do
     describe '.to_s' do
       subject(:string) { base.to_s }
 
-      it { is_expected.to eq '{"key1":"test","key2":3,"key3":null}' }
+      it { is_expected.to eq '{"key1":"test","key2":3,"key3":null,"key4":[1,2,3]}' }
 
       context 'with an empty optional' do
         before { base.key1 = nil }
 
-        it { is_expected.to eq '{"key2":3,"key3":null}' }
+        it { is_expected.to eq '{"key2":3,"key3":null,"key4":[1,2,3]}' }
       end
     end
   end

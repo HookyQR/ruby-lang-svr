@@ -11,6 +11,6 @@ module Protocol
     lsp_attribute :initializationOptions, Object, optional: true
     lsp_attribute :capabilities, ClientCapabilities
     lsp_attribute :trace, [String], optional: true, in: %w[off messages verbose]
-    lsp_attribute :workspaceFolders, [Array, NilClass], optional: true
+    lsp_attribute :workspaceFolders, [::Array, NilClass], optional: true
   end
 end
