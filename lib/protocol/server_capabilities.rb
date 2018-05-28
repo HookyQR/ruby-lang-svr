@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'base'
 require_relative 'workspace_client_capabilities'
 require_relative 'text_document_client_capabilities'
 

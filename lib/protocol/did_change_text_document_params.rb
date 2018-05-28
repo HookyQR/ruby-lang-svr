@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'base'
 require_relative 'versioned_text_document_identifier'
 require_relative 'text_document_content_change_event'
 
