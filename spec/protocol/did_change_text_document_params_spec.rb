@@ -2,11 +2,11 @@
 
 require 'protocol/did_change_text_document_params'
 
-RSpec.describe Protocol::DidChangeTextDocumentParams do
+RSpec.describe LangSvr::Protocol::DidChangeTextDocumentParams do
   let(:readable) { %i[] }
   let(:writeable) { %i[textDocument contentChanges] }
 
-  include_examples 'protocol component', Protocol::Base
+  include_examples 'protocol component', LangSvr::Protocol::Base
 
   describe 'from_hash' do
     it 'accepts arrays' do
@@ -21,7 +21,7 @@ RSpec.describe Protocol::DidChangeTextDocumentParams do
           { text: 'test3' }
         ]
       )
-      expect(res.contentChanges[0]).to be_an_instance_of(Protocol::TextDocumentContentChangeEvent)
+      expect(res.contentChanges[0]).to be_an_instance_of(LangSvr::Protocol::TextDocumentContentChangeEvent)
     end
   end
 end

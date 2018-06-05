@@ -2,9 +2,9 @@
 
 require 'protocol/did_change_watched_files_params'
 
-RSpec.describe Protocol::DidChangeWatchedFilesParams do
+RSpec.describe LangSvr::Protocol::DidChangeWatchedFilesParams do
   let(:readable) { %i[] }
   let(:writeable) { %i[changes] }
 
-  include_examples 'protocol component', Protocol::Base
+  include_examples 'protocol component', LangSvr::Protocol::Base
 end

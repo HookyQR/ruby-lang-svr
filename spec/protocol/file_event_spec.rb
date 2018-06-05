@@ -2,9 +2,9 @@
 
 require 'protocol/file_event'
 
-RSpec.describe Protocol::FileEvent do
+RSpec.describe LangSvr::Protocol::FileEvent do
   let(:readable) { %i[] }
   let(:writeable) { %i[type] }
 
-  include_examples 'protocol component', Protocol::Base
+  include_examples 'protocol component', LangSvr::Protocol::Base
 end

@@ -2,9 +2,9 @@
 
 require 'protocol/range'
 
-RSpec.describe Protocol::Range do
+RSpec.describe LangSvr::Protocol::Range do
   let(:readable) { %i[] }
   let(:writeable) { %i[start end] }
 
-  include_examples 'protocol component', Protocol::Base
+  include_examples 'protocol component', LangSvr::Protocol::Base
 end

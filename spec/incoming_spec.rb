@@ -12,11 +12,11 @@ RSpec.describe LangSvr::Incoming do
   describe '.message' do
     subject(:message) { incoming.message }
 
-    let(:init_request) { Protocol::Messages::InitializeRequest.new(id: 1, params: init_params) }
-    let(:init_params) { Protocol::InitializeParams.new(processId: 1, rootUri: nil, capabilities: client_caps) }
-    let(:client_caps) { Protocol::ClientCapabilities.new }
+    let(:init_request) { LangSvr::Protocol::Messages::InitializeRequest.new(id: 1, params: init_params) }
+    let(:init_params) { LangSvr::Protocol::InitializeParams.new(processId: 1, rootUri: nil, capabilities: client_caps) }
+    let(:client_caps) { LangSvr::Protocol::ClientCapabilities.new }
 
-    it { is_expected.to be_an_instance_of(Protocol::Messages::InitializeRequest) }
+    it { is_expected.to be_an_instance_of(LangSvr::Protocol::Messages::InitializeRequest) }
 
     context 'insufficient data' do
       let(:length) { data.length - 1 }

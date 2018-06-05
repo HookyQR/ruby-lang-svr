@@ -2,7 +2,7 @@
 
 require 'protocol/util/string_list'
 
-RSpec.describe Protocol::Util::StringList do
+RSpec.describe LangSvr::Protocol::Util::StringList do
   subject(:string_list) { described_class.new(values) }
   let(:values) { [] }
 

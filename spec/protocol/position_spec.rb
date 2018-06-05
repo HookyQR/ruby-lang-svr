@@ -2,9 +2,9 @@
 
 require 'protocol/position'
 
-RSpec.describe Protocol::Position do
+RSpec.describe LangSvr::Protocol::Position do
   let(:readable) { %i[] }
   let(:writeable) { %i[line character] }
 
-  include_examples 'protocol component', Protocol::Base
+  include_examples 'protocol component', LangSvr::Protocol::Base
 end

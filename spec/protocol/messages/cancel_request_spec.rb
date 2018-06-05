@@ -2,9 +2,9 @@
 
 require 'protocol/messages/cancel_request'
 
-RSpec.describe Protocol::Messages::CancelRequest do
+RSpec.describe LangSvr::Protocol::Messages::CancelRequest do
   let(:readable) { %i[method] }
   let(:writeable) { %i[params] }
 
-  include_examples 'protocol component', Protocol::NotificationMessage
+  include_examples 'protocol component', LangSvr::Protocol::NotificationMessage
 end

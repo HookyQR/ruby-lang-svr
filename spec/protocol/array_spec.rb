@@ -3,11 +3,11 @@
 require 'protocol/array'
 require 'protocol/base'
 
-class TestClass < Protocol::Base
+class TestClass < LangSvr::Protocol::Base
   lsp_attribute :array, Integer, array: true
 end
 
-RSpec.describe Protocol::Array do
+RSpec.describe LangSvr::Protocol::Array do
   subject(:array) { test.array }
   let(:test) { TestClass.new(array: input) }
   let(:input) { [1, 2] }
@@ -31,8 +31,8 @@ RSpec.describe Protocol::Array do
       it { expect { array }.to raise_error(StandardError, /is not a/) }
     end
 
-    context 'set from a Protocol::Array' do
-      let(:input) { Protocol::Array.new(1, 1) }
+    context 'set from a LangSvr::Protocol::Array' do
+      let(:input) { LangSvr::Protocol::Array.new(1, 1) }
 
       it { expect { test.array = array }.not_to raise_error }
     end

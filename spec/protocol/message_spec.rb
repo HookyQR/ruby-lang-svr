@@ -2,9 +2,9 @@
 
 require 'protocol/message'
 
-RSpec.describe Protocol::Message do
+RSpec.describe LangSvr::Protocol::Message do
   let(:readable) { %i[jsonrpc] }
   let(:writeable) { %i[] }
 
-  include_examples 'protocol component', Protocol::Base
+  include_examples 'protocol component', LangSvr::Protocol::Base
 end

@@ -2,7 +2,7 @@
 
 require 'protocol/util/from_hash'
 
-RSpec.describe Protocol::Util::FromHash do
+RSpec.describe LangSvr::Protocol::Util::FromHash do
   subject(:from_hash) { described_class.new(hash, klass) }
   let(:hash) { { constVal: 'first', val: 'second' } }
   let(:klass) do

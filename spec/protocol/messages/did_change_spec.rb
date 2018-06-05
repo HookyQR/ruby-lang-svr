@@ -2,9 +2,9 @@
 
 require 'protocol/messages/did_change'
 
-RSpec.describe Protocol::Messages::DidChange do
+RSpec.describe LangSvr::Protocol::Messages::DidChange do
   let(:readable) { %i[method] }
   let(:writeable) { %i[params] }
 
-  include_examples 'protocol component', Protocol::Base
+  include_examples 'protocol component', LangSvr::Protocol::Base
 end

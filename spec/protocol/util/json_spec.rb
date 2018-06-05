@@ -2,7 +2,7 @@
 
 require 'protocol/util/json'
 
-RSpec.describe Protocol::Util::JSON do
+RSpec.describe LangSvr::Protocol::Util::JSON do
   subject(:json) { described_class.new(object) }
   let(:object) { 5 }
 
@@ -25,7 +25,7 @@ RSpec.describe Protocol::Util::JSON do
 
     context 'hash' do
       # note: for our uses, nil represents an un-filled optional value
-      #  use Protocol::
+      #  use LangSvr::Protocol::
       let(:object) { { a: 1, b: 'test', c: nil } }
 
       before do

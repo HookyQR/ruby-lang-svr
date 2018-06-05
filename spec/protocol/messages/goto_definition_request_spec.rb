@@ -2,9 +2,9 @@
 
 require 'protocol/messages/goto_definition_request'
 
-RSpec.describe Protocol::Messages::GotoDefintionRequest do
+RSpec.describe LangSvr::Protocol::Messages::GotoDefintionRequest do
   let(:readable) { %i[method] }
   let(:writeable) { %i[params] }
 
-  include_examples 'protocol component', Protocol::RequestMessage
+  include_examples 'protocol component', LangSvr::Protocol::RequestMessage
 end

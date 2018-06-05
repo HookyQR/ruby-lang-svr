@@ -2,12 +2,14 @@
 
 require_relative '../notification_message'
 
-module Protocol
-  module Messages
-    class InitializedNotification < NotificationMessage
-      lsp_const :method, 'initialized'
+module LangSvr
+  module Protocol
+    module Messages
+      class InitializedNotification < NotificationMessage
+        lsp_const :method, 'initialized'
 
-      def process_message; end
+        def process_message; end
+      end
     end
   end
 end

@@ -2,7 +2,7 @@
 
 require 'protocol/text_document_client_capabilities'
 
-RSpec.describe Protocol::TextDocumentClientCapabilities do
+RSpec.describe LangSvr::Protocol::TextDocumentClientCapabilities do
   let(:readable) { %i[] }
   let(:writeable) do
     %i[synchronization completion hover signatureHelp references documentHighlight] +
@@ -11,5 +11,5 @@ RSpec.describe Protocol::TextDocumentClientCapabilities do
       %i[rename publishDiagnostics]
   end
 
-  include_examples 'protocol component', Protocol::Base
+  include_examples 'protocol component', LangSvr::Protocol::Base
 end

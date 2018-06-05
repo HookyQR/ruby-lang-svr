@@ -2,9 +2,9 @@
 
 require 'protocol/did_open_text_document_params'
 
-RSpec.describe Protocol::DidOpenTextDocumentParams do
+RSpec.describe LangSvr::Protocol::DidOpenTextDocumentParams do
   let(:readable) { %i[] }
   let(:writeable) { %i[textDocument] }
 
-  include_examples 'protocol component', Protocol::Base
+  include_examples 'protocol component', LangSvr::Protocol::Base
 end

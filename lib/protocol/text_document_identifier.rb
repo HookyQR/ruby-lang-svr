@@ -2,8 +2,10 @@
 
 require_relative 'base'
 
-module Protocol
-  class TextDocumentIdentifier < Base
-    lsp_attribute :uri, String
+module LangSvr
+  module Protocol
+    class TextDocumentIdentifier < Base
+      lsp_attribute :uri, String
+    end
   end
 end

@@ -2,9 +2,9 @@
 
 require 'protocol/initialize_result'
 
-RSpec.describe Protocol::InitializeResult do
+RSpec.describe LangSvr::Protocol::InitializeResult do
   let(:readable) { %i[] }
   let(:writeable) { %i[capabilities] }
 
-  include_examples 'protocol component', Protocol::Base
+  include_examples 'protocol component', LangSvr::Protocol::Base
 end

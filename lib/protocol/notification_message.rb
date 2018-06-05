@@ -2,9 +2,11 @@
 
 require_relative 'message'
 
-module Protocol
-  class NotificationMessage < Message
-    lsp_attribute :method, String
-    lsp_attribute :params, Object, optional: true
+module LangSvr
+  module Protocol
+    class NotificationMessage < Message
+      lsp_attribute :method, String
+      lsp_attribute :params, Object, optional: true
+    end
   end
 end

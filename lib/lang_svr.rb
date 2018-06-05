@@ -39,8 +39,8 @@ module LangSvr
 
     def init(request)
       return default if initialized?
-      @initialized = true
 
+      @initialized = true
       init_params = request.params
 
       Protocol::ResponseMessage.new(

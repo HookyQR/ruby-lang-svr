@@ -2,9 +2,9 @@
 
 require 'protocol/response_message'
 
-RSpec.describe Protocol::ResponseMessage do
+RSpec.describe LangSvr::Protocol::ResponseMessage do
   let(:readable) { %i[] }
   let(:writeable) { %i[id result error] }
 
-  include_examples 'protocol component', Protocol::Message
+  include_examples 'protocol component', LangSvr::Protocol::Message
 end

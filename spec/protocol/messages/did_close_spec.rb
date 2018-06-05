@@ -2,9 +2,9 @@
 
 require 'protocol/messages/did_close'
 
-RSpec.describe Protocol::Messages::DidClose do
+RSpec.describe LangSvr::Protocol::Messages::DidClose do
   let(:readable) { %i[method] }
   let(:writeable) { %i[params] }
 
-  include_examples 'protocol component', Protocol::Base
+  include_examples 'protocol component', LangSvr::Protocol::Base
 end

@@ -2,21 +2,23 @@
 
 require 'protocol/base'
 
-RSpec.describe Protocol::Base do
+RSpec.describe LangSvr::Protocol::Base do
   after do
-    module Protocol
-      class Base
-        instance_variable_get(:@lsp_attrs).each do |name, _|
-          remove_method(name) if method_defined? name
-          remove_method("#{name}=") if method_defined? "#{name}="
-        end
+    module LangSvr
+      module Protocol
+        class Base
+          instance_variable_get(:@lsp_attrs).each do |name, _|
+            remove_method(name) if method_defined? name
+            remove_method("#{name}=") if method_defined? "#{name}="
+          end
 
-        @lsp_attrs = {}
+          @lsp_attrs = {}
+        end
       end
     end
   end
 
-  subject(:base_class) { Protocol::Base }
+  subject(:base_class) { LangSvr::Protocol::Base }
 
   let(:key) { :key }
   let(:types) { [String] }
@@ -62,7 +64,7 @@ RSpec.describe Protocol::Base do
 
       context 'with nil' do
         let(:val) { nil }
-        before { expect(Protocol::NULL).to receive(:new).and_call_original }
+        before { expect(LangSvr::Protocol::NULL).to receive(:new).and_call_original }
 
         it { expect { lsp_const }.not_to raise_error }
       end
@@ -78,7 +80,7 @@ RSpec.describe Protocol::Base do
     end
 
     context 'inherited' do
-      class T < Protocol::Base
+      class T < LangSvr::Protocol::Base
         lsp_const :key2, 'Test'
       end
 
