@@ -2,6 +2,8 @@
 
 Dir[File.join(__dir__, 'protocol', 'messages', '*.rb')].each { |file| require_relative file }
 
+require 'json'
+
 module LangSvr
   CRLF = "\r\n"
 

@@ -4,6 +4,6 @@ require_relative 'base'
 
 module Protocol
   class Message < Base
-    lsp_attribute :jsonrpc, '2.0'
+    lsp_const :jsonrpc, '2.0'
   end
 end

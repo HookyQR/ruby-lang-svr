@@ -9,7 +9,7 @@ module Protocol
       end
 
       def call
-        @candidates.any? { |type| @value.is_a? type }
+        @candidates&.any? { |type| @value.is_a? type }
       end
     end
   end

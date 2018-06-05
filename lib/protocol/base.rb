@@ -18,17 +18,26 @@ module Protocol
       end
     end
 
-    def self.lsp_attribute(key, type_or_val, **opts)
+    def self.lsp_attribute(key, *types, **opts)
       @lsp_attrs ||= {}
       @lsp_attrs[key] = opts.dup
 
-      case type_or_val
-      when ::Array then lsp_attribute_type_setter(key, type_or_val)
-      when ::Class then lsp_attribute_type_setter(key, [type_or_val])
-      else            return lsp_const(key, type_or_val)
-      end
-
+      lsp_attribute_type_setter(key, types)
       lsp_attribute_getter(key)
+    end
+
+    def self.lsp_const(key, value)
+      @lsp_attrs ||= {}
+      @lsp_attrs[key] = {}
+
+      define_method("#{key}=") { |_| value } if public_instance_methods.include?("#{key}=".to_sym)
+
+      v = value.nil? ? NULL.new : value
+      define_method(key) { v }
+
+      const_name = key.to_s.gsub(/[A-Z]/) { |u| "_#{u}" }.upcase
+
+      const_set(const_name, v)
     end
 
     def to_s
@@ -66,18 +75,6 @@ module Protocol
 
       private
 
-      def lsp_const(key, value)
-        define_method("#{key}=") { value } if methods.include?("#{key}=")
-
-        v = value.nil? ? NULL.new : value
-        define_method(key) { v }
-
-        const_name = key.to_s.gsub(/[A-Z]/) { |u| "_#{u}" }.upcase
-
-        # remove_const(const_name) if const_defined? const_name
-        const_set(const_name, v)
-      end
-
       def lsp_attribute_type_setter(key, types)
         raise StandardError, 'attribute types must have at least one value' if types.empty?
         raise StandardError, 'attribute types must all be classes' unless types.all? { |t| t.is_a? Class }
@@ -90,7 +87,7 @@ module Protocol
         own_attrs = lsp_attrs[key]
         define_method(key) do
           if own_attrs[:array] && !instance_variable_defined?("@#{key}")
-            Array.new.tap do |array|
+            Protocol::Array.new.tap do |array|
               array.lsp_attrs = own_attrs
               instance_variable_set("@#{key}", array)
             end

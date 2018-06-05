@@ -19,11 +19,11 @@ RSpec.describe Protocol::Base do
   subject(:base_class) { Protocol::Base }
 
   let(:key) { :key }
-  let(:types) { String }
+  let(:types) { [String] }
   let(:opts) { { optional: true } }
 
   describe '#lsp_attribute' do
-    subject(:lsp_attribute) { base_class.lsp_attribute(key, types, opts) }
+    subject(:lsp_attribute) { base_class.lsp_attribute(key, *types, opts) }
 
     context 'happy case' do
       it { expect { lsp_attribute }.not_to raise_error }
@@ -49,25 +49,29 @@ RSpec.describe Protocol::Base do
       let(:types) { [1] }
       it { expect { lsp_attribute }.to raise_error(StandardError, /must all be classes/) }
     end
+  end
+
+  describe '#lsp_const' do
+    subject(:lsp_const) { base_class.lsp_const(key, val) }
 
     context 'a value instead of a type (const set)' do
       after { base_class.send(:remove_const, :KEY) }
 
-      let(:types) { 1 }
-      it { expect { lsp_attribute }.not_to raise_error }
+      let(:val) { 1 }
+      it { expect { lsp_const }.not_to raise_error }
 
       context 'with nil' do
-        let(:types) { nil }
+        let(:val) { nil }
         before { expect(Protocol::NULL).to receive(:new).and_call_original }
 
-        it { expect { lsp_attribute }.not_to raise_error }
+        it { expect { lsp_const }.not_to raise_error }
       end
     end
   end
 
   describe '#lsp_attrs' do
     subject(:lsp_attrs) { base_class.lsp_attrs }
-    before { base_class.lsp_attribute(key, types, opts) }
+    before { base_class.lsp_attribute(key, *types, opts) }
 
     context 'basic case' do
       it { is_expected.to include(key => a_hash_including(opts)) }
@@ -75,7 +79,7 @@ RSpec.describe Protocol::Base do
 
     context 'inherited' do
       class T < Protocol::Base
-        lsp_attribute :key2, 'Test'
+        lsp_const :key2, 'Test'
       end
 
       subject(:lsp_attrs) { T.lsp_attrs }
@@ -93,8 +97,8 @@ RSpec.describe Protocol::Base do
     before do
       base_class.lsp_attribute(:key1, String, optional: true)
       base_class.lsp_attribute(:key2, Integer, in: [1, 2, 3])
-      base_class.lsp_attribute(:key3, [Integer, NilClass])
-      base_class.lsp_attribute(:key4, [Integer, NilClass], array: true)
+      base_class.lsp_attribute(:key3, Integer, NilClass)
+      base_class.lsp_attribute(:key4, Integer, NilClass, array: true)
     end
 
     subject(:base) { base_class.new(key1: 'test', key2: 3, key3: nil, key4: [1, 2, 3]) }

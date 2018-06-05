@@ -1,6 +1,5 @@
 # frozen-string-literal: true
 
-require 'json'
 require_relative 'incoming'
 require_relative 'protocol/initialize_result'
 require_relative 'protocol/response_message'
@@ -48,7 +47,8 @@ module LangSvr
         id: request.id,
         result: Protocol::InitializeResult.new(
           capabilities: Protocol::ServerCapabilities.new(
-            textDocumentSync: 1
+            textDocumentSync: 1,
+            definitionProvider: true
           )
         )
       )
